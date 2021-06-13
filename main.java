@@ -36,9 +36,13 @@ public class main {
         }
         ArrayList<Integer> myResults = Knapsack.results;
         ArrayList<ArrayList<Integer>> myLists = Knapsack.listOfLists;
-        System.out.print("Hi! " + biggest(myResults));
+        System.out.println(biggest(myResults));
+        int index = myResults.indexOf(biggest(myResults));
 
-
+        for (int i=0; i<size; i++) {
+            System.out.println(myLists.get(index).get(i));
+        }
+        System.out.println("he");
     }
 
     public static int biggest(ArrayList<Integer> list) {

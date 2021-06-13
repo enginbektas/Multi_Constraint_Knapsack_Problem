@@ -1,10 +1,14 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 class Knapsack {
 
-    private static int size;
-    private static float capacity;
+    public static ArrayList<ArrayList<Integer>> listOfLists = new ArrayList<>();
+    public static ArrayList<Integer> selections = new ArrayList<>();
+    public static ArrayList<Integer> results = new ArrayList<>();
+    public static int size;
+    public static float capacity;
 
     // Function to calculate upper bound
     // (includes fractional part of the items)
@@ -186,16 +190,23 @@ class Knapsack {
             if (minLB >= right.ub)
                 pq.add(new Node(right));
         }
-        System.out.println("Items taken"
-                + "into the knapsack are");
         for (int i = 0; i < size; i++) {
-            if (finalPath[i])
+            if (finalPath[i]) {
                 System.out.print("1 ");
-            else
+                selections.add(1);
+            }
+
+            else {
                 System.out.print("0 ");
+                selections.add(0);
+            }
         }
-        System.out.println("\nMaximum profit"
-                + " is " + (-finalLB));
+        System.out.println("\nMaximum profit" + " is " + (-finalLB));
+        results.add((int)(-finalLB));
+        ArrayList<Integer> temp = (ArrayList<Integer>) selections.clone();
+        listOfLists.add(temp);
+        selections.clear();
+//        System.out.println("");
     }
 
     // Driver code

@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class main {
@@ -13,24 +15,35 @@ public class main {
         array[3] = capacities of knapsacks;
         array[4] = knapsacks (sets of weights); (double array)
          */
-        Object array[] = Reader.read();
+        Reader.read();
 
-        int size = (Integer)array[1];
-        int capacities[] = array[3];
-        int capacity = (Integer)array[3];
-        System.out.println(capacities);
+        int capacities[] = Reader.capacities;
+        int size = Reader.numberOfItems;
+        int values[] = Reader.values;
+        Knapsack.capacity = capacities[0];
+        Knapsack.size = size;
+        int knapsacks[][] = Reader.knapsacks;
+        int numberOfKnapsacks = Reader.numberOfKnapsacks;
 
 
+        Item arr[] = new Item[size];
 
-//
-//        Item arr[] = new Item[size];
-//        arr[0] = new Item(10, 2, 0);
-//        arr[1] = new Item(10, 4, 1);
-//        arr[2] = new Item(12, 6, 2);
-//        arr[3] = new Item(18, 9, 3);
-//
-//        solve(arr);
+        for (int i = 0; i < numberOfKnapsacks; i++) {
+            for (int j = 0; j < size; j++) {
+                arr[j] = new Item(values[j], knapsacks[i][j], j);
+            }
+            Knapsack.solve(arr);
+        }
+        ArrayList<Integer> myResults = Knapsack.results;
+        ArrayList<ArrayList<Integer>> myLists = Knapsack.listOfLists;
+        System.out.print("Hi! " + biggest(myResults));
 
+
+    }
+
+    public static int biggest(ArrayList<Integer> list) {
+        Object obj = Collections.max(list);
+        return (Integer)obj;
     }
 
 }

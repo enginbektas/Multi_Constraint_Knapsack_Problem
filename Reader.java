@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Reader {
+    public static int numberOfKnapsacks;
+    public static int numberOfItems;
+    public static int[] values;
+    public static int[] capacities;
+    public static int[][] knapsacks;
+
     public static Object[] read() {
         /*
     1.: read two integers. first knapsack #, second item #
@@ -13,8 +19,8 @@ public class Reader {
     5.: repeat step 4, but this time read weights of knapsack #n+1.
      */
         Object array[] = new Object[5];
-        int numberOfKnapsacks;
-        int numberOfItems;
+
+
         ArrayList<Integer> elements = new ArrayList();
         Scanner sc2 = null;
         try {
@@ -25,9 +31,9 @@ public class Reader {
         Scanner s2 = new Scanner(sc2.nextLine());
         numberOfKnapsacks = Integer.parseInt(s2.next());
         numberOfItems = Integer.parseInt(s2.next());
-        int[] values = new int[numberOfItems];
-        int[] capacities = new int[numberOfKnapsacks];
-        int[][] knapsacks = new int[numberOfKnapsacks][numberOfItems];
+        values = new int[numberOfItems];
+        capacities = new int[numberOfKnapsacks];
+        knapsacks = new int[numberOfKnapsacks][numberOfItems];
 
         while (sc2.hasNextLine()) {
             s2 = new Scanner(sc2.nextLine());

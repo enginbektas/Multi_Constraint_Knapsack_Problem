@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,15 +10,8 @@ import java.util.Scanner;
 public class main {
 
     public static void main (String args[]) {
-        /*
-        array[0] = numberOfKnapsacks;
-        array[1] = numberOfItems;
-        array[2] = values;
-        array[3] = capacities of knapsacks;
-        array[4] = knapsacks (sets of weights); (double array)
-         */
-        Reader.read();
 
+        Reader.read();
         int capacities[] = Reader.capacities;
         int size = Reader.numberOfItems;
         int values[] = Reader.values;
@@ -42,7 +37,20 @@ public class main {
         for (int i=0; i<size; i++) {
             System.out.println(myLists.get(index).get(i));
         }
-        System.out.println("he");
+
+        try {
+            FileWriter myWriter = new FileWriter("output.txt");
+            myWriter.write(biggest(myResults));
+            for (int i=0; i<size; i++) {
+                myWriter.write("" + myLists.get(index).get(i));
+            }
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        System.out.println("");
     }
 
     public static int biggest(ArrayList<Integer> list) {

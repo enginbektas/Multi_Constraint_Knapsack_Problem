@@ -192,16 +192,13 @@ class Knapsack {
         }
         for (int i = 0; i < size; i++) {
             if (finalPath[i]) {
-                System.out.print("1 ");
                 selections.add(1);
             }
-
             else {
-                System.out.print("0 ");
                 selections.add(0);
             }
         }
-        System.out.println("\nMaximum profit" + " is " + (-finalLB));
+
         results.add((int)(-finalLB));
         ArrayList<Integer> temp = (ArrayList<Integer>) selections.clone();
         listOfLists.add(temp);

@@ -21,29 +21,11 @@ public class main {
         Knapsack.size = size;
 
         //Bound and Bound method
-//        Item arr[] = new Item[size];
-//        for (int i = 0; i < numberOfKnapsacks; i++) {
-//            for (int j = 0; j < size; j++) {
-//                arr[j] = new Item(values[j], knapsacks[i][j], j);
-//            }
-//            Knapsack.solve(arr);
-//        }
-//        ArrayList<Integer> myResults = Knapsack.results;
-//        ArrayList<ArrayList<Integer>> myLists = Knapsack.listOfLists;
-//        System.out.println(biggest(myResults));
-//        int index = myResults.indexOf(biggest(myResults));
-//
-//        for (int i=0; i<size; i++) {
-//            System.out.println(myLists.get(index).get(i));
-//        }
-
-        //recursion method
-//        int recur = Recursion.knapsackRec(knapsacks[0], values, size, capacities[0]);
-//        System.out.println(recur);
-
+        BB();
+        //Recursion method
+        System.out.println(Recursion.knapsackRec(knapsacks[0], values, size, capacities[0]));
         //DP method
-        int dp = Recursion.knapsackRec(knapsacks[0], values, size, capacities[0]);
-        System.out.println(dp);
+        System.out.println(Recursion.knapsackRec(knapsacks[0], values, size, capacities[0]));
 
 
     }
@@ -51,6 +33,30 @@ public class main {
     public static int biggest(ArrayList<Integer> list) {
         Object obj = Collections.max(list);
         return (Integer)obj;
+    }
+
+    public static void BB() {
+        int capacities[] = Reader.capacities;
+        int size = Reader.numberOfItems;
+        int values[] = Reader.values;
+        int knapsacks[][] = Reader.knapsacks;
+        int numberOfKnapsacks = Reader.numberOfKnapsacks;
+
+        Item arr[] = new Item[size];
+        for (int i = 0; i < numberOfKnapsacks; i++) {
+            for (int j = 0; j < size; j++) {
+                arr[j] = new Item(values[j], knapsacks[i][j], j);
+            }
+            Knapsack.solve(arr);
+        }
+        ArrayList<Integer> myResults = Knapsack.results;
+        ArrayList<ArrayList<Integer>> myLists = Knapsack.listOfLists;
+        System.out.println(biggest(myResults));
+        int index = myResults.indexOf(biggest(myResults));
+
+        for (int i=0; i<size; i++) {
+            System.out.println(myLists.get(index).get(i));
+        }
     }
 
 }

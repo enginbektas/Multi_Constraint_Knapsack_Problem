@@ -1,5 +1,5 @@
 public class Recursion {
-    public int knapsackRec(int[] w, int[] v, int n, int W) {
+    public static int knapsackRec(int[] w, int[] v, int n, int W) {
         if (n <= 0) {
             return 0;
         } else if (w[n - 1] > W) {

@@ -15,42 +15,37 @@ public class main {
         int capacities[] = Reader.capacities;
         int size = Reader.numberOfItems;
         int values[] = Reader.values;
-        Knapsack.capacity = capacities[0];
-        Knapsack.size = size;
         int knapsacks[][] = Reader.knapsacks;
         int numberOfKnapsacks = Reader.numberOfKnapsacks;
+        Knapsack.capacity = capacities[0];
+        Knapsack.size = size;
+
+        //Bound and Bound method
+//        Item arr[] = new Item[size];
+//        for (int i = 0; i < numberOfKnapsacks; i++) {
+//            for (int j = 0; j < size; j++) {
+//                arr[j] = new Item(values[j], knapsacks[i][j], j);
+//            }
+//            Knapsack.solve(arr);
+//        }
+//        ArrayList<Integer> myResults = Knapsack.results;
+//        ArrayList<ArrayList<Integer>> myLists = Knapsack.listOfLists;
+//        System.out.println(biggest(myResults));
+//        int index = myResults.indexOf(biggest(myResults));
+//
+//        for (int i=0; i<size; i++) {
+//            System.out.println(myLists.get(index).get(i));
+//        }
+
+        //recursion method
+//        int recur = Recursion.knapsackRec(knapsacks[0], values, size, capacities[0]);
+//        System.out.println(recur);
+
+        //DP method
+        int dp = Recursion.knapsackRec(knapsacks[0], values, size, capacities[0]);
+        System.out.println(dp);
 
 
-        Item arr[] = new Item[size];
-
-        for (int i = 0; i < numberOfKnapsacks; i++) {
-            for (int j = 0; j < size; j++) {
-                arr[j] = new Item(values[j], knapsacks[i][j], j);
-            }
-            Knapsack.solve(arr);
-        }
-        ArrayList<Integer> myResults = Knapsack.results;
-        ArrayList<ArrayList<Integer>> myLists = Knapsack.listOfLists;
-        System.out.println(biggest(myResults));
-        int index = myResults.indexOf(biggest(myResults));
-
-        for (int i=0; i<size; i++) {
-            System.out.println(myLists.get(index).get(i));
-        }
-
-        try {
-            FileWriter myWriter = new FileWriter("output.txt");
-            myWriter.write(biggest(myResults));
-            for (int i=0; i<size; i++) {
-                myWriter.write("" + myLists.get(index).get(i));
-            }
-            myWriter.close();
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-
-        System.out.println("");
     }
 
     public static int biggest(ArrayList<Integer> list) {

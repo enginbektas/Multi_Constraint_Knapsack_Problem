@@ -76,6 +76,7 @@ public class main {
         }
 
         int[] valuesOfItems = valuesOfItems(values, knapsacks[indexOfOptimalKnapsack]);
+        int indexOfLargest = indexOfLargest(valuesOfItems);
         int[] overweightKnapsacks = overweightKnapsacks(numberOfKnapsacks, capacities, knapsacks, myItems);
         System.out.println("");
         while(doesContain(overweightKnapsacks, 1)) {

@@ -206,19 +206,6 @@ class Knapsack {
 //        System.out.println("");
     }
 
-    // Driver code
-    public static void main(String args[]) {
-        size = 4;
-        capacity = 15;
-
-        Item arr[] = new Item[size];
-        arr[0] = new Item(10, 2, 0);
-        arr[1] = new Item(10, 4, 1);
-        arr[2] = new Item(12, 6, 2);
-        arr[3] = new Item(18, 9, 3);
-
-        solve(arr);
-    }
 }
 
 class Item {

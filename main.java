@@ -1,12 +1,5 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Scanner;
 
 public class main {
     public static int indexOfOptimalKnapsack;
@@ -18,11 +11,12 @@ public class main {
         int values[] = Reader.values;
         int knapsacks[][] = Reader.knapsacks;
         int numberOfKnapsacks = Reader.numberOfKnapsacks;
-        Knapsack.capacity = capacities[0];
         Knapsack.size = size;
 
-        //Bound and Bound method
+        //Branch and Bound Method
         BB();
+
+        //To use other methods, uncomment neccesary lines.
         //Recursion method
         //System.out.println(Recursion.knapsackRec(knapsacks[0], values, size, capacities[0]));
         //DP method
@@ -30,7 +24,6 @@ public class main {
 
 
     }
-
 
     public static int biggest(ArrayList<Integer> list) {
         Object obj = Collections.max(list);
@@ -45,20 +38,25 @@ public class main {
         int numberOfKnapsacks = Reader.numberOfKnapsacks;
 
         Item arr[] = new Item[size];
+        //Solve for each knapsack individually and save results
+        int[] totalWeights = new int[numberOfKnapsacks];
         for (int i = 0; i < numberOfKnapsacks; i++) {
+            Knapsack.capacity = capacities[i];
             for (int j = 0; j < size; j++) {
                 arr[j] = new Item(values[j], knapsacks[i][j], j);
             }
             Knapsack.solve(arr);
         }
+        //save optimal results for each knapsack, individually
         ArrayList<Integer> optimalValues = Knapsack.results;
+        //store our item selection as 0's and 1's for our highest scored knapsack
         ArrayList<ArrayList<Integer>> oneZeros = Knapsack.listOfLists;
 
         System.out.println(biggest(optimalValues));
+        //find the index of the knapsack which has the highest score
         int indexOfOptimalKnapsack = optimalValues.indexOf(biggest(optimalValues));
-        ///////////
+        //totalWeights will hold weights for our knapsacks for our item selection
 
-        int[] totalWeights = new int[numberOfKnapsacks];
         for (int l = 0; l < numberOfKnapsacks; l++) {
             int sum = 0;
             for (int i = 0; i < size; i++) {
@@ -74,11 +72,18 @@ public class main {
         for (int i = 0; i < size; i++) {
             myItems.add(oneZeros.get(indexOfOptimalKnapsack).get(i));
         }
-
         double[] valuesOfItems = valuesOfItems(values, knapsacks[indexOfOptimalKnapsack]);
-
+        //hold knapsacks that are overweight with our item selection
         int[] overweightKnapsacks = overweightKnapsacks(numberOfKnapsacks, capacities, knapsacks, myItems);
-        System.out.println("");
+        //remove least valuable item for our optimal knapsack from knapsacks that are overweight, from start to end
+        //till there are no more overweight knapsacks.
+        int x = 0;
+        for (int j = 0; j < knapsacks[indexOfOptimalKnapsack].length; j++) {
+            if (myItems.get(j) == 1)
+                x =+ knapsacks[indexOfOptimalKnapsack][j];
+        }
+        System.out.println(x);
+        System.out.println(capacities[indexOfOptimalKnapsack]);
         while(doesContain(overweightKnapsacks, 1)) {
             int indexOfKnapsackToReduce = indexOfKnapsackToReduce(overweightKnapsacks);
             if (indexOfKnapsackToReduce <= numberOfKnapsacks - 1) {
@@ -101,11 +106,13 @@ public class main {
         }
 
     }
+
+    //returns the largest item of given array.
     public static int indexOfLargest(double arr[]) {
         double max = arr[0];
         int maxIndex = 0;
         for (int i = 1; i < arr.length; i++) {
-            if (arr[i] < max && arr[i] < 0) {
+            if (arr[i] > max && arr[i] < 0) {
                 max = arr[i];
                 maxIndex = i;
             }
@@ -114,6 +121,7 @@ public class main {
         return maxIndex;
     }
 
+    //returns values of the given array, excluding the non selected items
     public static double[] valuesOfItems(int[] values, int[] weights) {
         double[] result = new double[values.length];
         for (int i = 0; i < values.length; i++) {
@@ -125,6 +133,7 @@ public class main {
         return result;
     }
 
+    //returns optimal value of given items and given knapsack
     public static int newOptimalValue(ArrayList<Integer> myItems, int[] items, int knapsacks[][]) {
         int sum = 0;
         int result = 0;
@@ -151,12 +160,13 @@ public class main {
         return found;
     }
 
+    //returns true if a knapsack is overweight
     public static boolean isOverweight(int[] knapsack, ArrayList<Integer> items, int capacity) {
         int weight = weightOfKnapsack(knapsack, items);
         return (weight > capacity);
     }
 
-    //////TERMİNATE THİS
+    //returns overweight knapsacks from the knapsack list respectively
     public static int indexOfKnapsackToReduce(int[] overweightKnapsacks) {
         int i = 0;
         for (; i < overweightKnapsacks.length; i++)
@@ -165,6 +175,7 @@ public class main {
 
         return i + 1;
     }
+    //return an int array as 0's and 1's for the overweighted knapsacks.
     public static int[] overweightKnapsacks(int numberOfKnapsacks, int[] capacities, int[][] knapsacks, ArrayList<Integer> myItems) {
         int overweightKnapsacks[] = new int[numberOfKnapsacks];
         for (int i = 0; i < numberOfKnapsacks; i++) {
@@ -174,6 +185,7 @@ public class main {
         return overweightKnapsacks;
     }
 
+    //returns the total weight when we put our item selection in it
     public static int weightOfKnapsack(int[] knapsack, ArrayList<Integer> items) {
         int weight = 0;
         for (int i = 0; i < knapsack.length; i++) {
@@ -182,22 +194,4 @@ public class main {
         }
         return weight;
     }
-
-    public static int biggestWeight(int arr[]) {
-        int i = 1;
-        int j = 0;
-        // Initialize maximum element
-        int max = arr[0];
-
-        // Traverse array elements from second and
-        // compare every element with current max
-        for (; i < arr.length; i++) {
-            if (arr[i] > max) {
-                max = arr[i];
-                j = i;
-            }
-        }
-        return j;
-    }
-
 }

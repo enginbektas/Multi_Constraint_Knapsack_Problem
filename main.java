@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class main {
-
+    public static int indexOfOptimalKnapsack;
     public static void main (String args[]) {
 
         Reader.read();
@@ -51,44 +51,81 @@ public class main {
             }
             Knapsack.solve(arr);
         }
-        ArrayList<Integer> myResults = Knapsack.results;
-        ArrayList<ArrayList<Integer>> myLists = Knapsack.listOfLists;
+        ArrayList<Integer> optimalValues = Knapsack.results;
+        ArrayList<ArrayList<Integer>> oneZeros = Knapsack.listOfLists;
 
-        System.out.println(biggest(myResults));
-        int index = myResults.indexOf(biggest(myResults));
-
-        for (int i=0; i<size; i++) {
-            System.out.println(myLists.get(index).get(i));
-        }
+        System.out.println(biggest(optimalValues));
+        int indexOfOptimalKnapsack = optimalValues.indexOf(biggest(optimalValues));
+        ///////////
 
         int[] totalWeights = new int[numberOfKnapsacks];
-        for (int l = 0; l<numberOfKnapsacks; l++) {
+        for (int l = 0; l < numberOfKnapsacks; l++) {
             int sum = 0;
             for (int i = 0; i < size; i++) {
-                if (myLists.get(index).get(i) == 1) {
+                if (oneZeros.get(indexOfOptimalKnapsack).get(i) == 1) {
                     sum = sum + knapsacks[l][i];
                 }
             }
             System.out.println("total weight is: " + sum);
             totalWeights[l] = sum;
         }
-
-
-
-        ArrayList<Integer> list2 = new ArrayList<Integer>();
-        for(int x:totalWeights) {
-            list2.add(x);
+        //setting of my items
+        ArrayList<Integer> myItems = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            myItems.add(oneZeros.get(indexOfOptimalKnapsack).get(i));
         }
-        int indexOfBiggest = list2.indexOf(biggest(list2));
-        System.out.println(indexOfBiggest);
-        System.out.println(biggestWeight(knapsacks[indexOfBiggest]));
-        System.out.println(myLists.get(indexOfBiggest).get(biggestWeight(knapsacks[indexOfBiggest])));
 
-        if (myLists.get(indexOfBiggest).get(biggestWeight(knapsacks[indexOfBiggest])) == 1) {
-            myLists.get(indexOfBiggest).set(biggestWeight(knapsacks[indexOfBiggest]),0);
+        int[] overweightKnapsacks = overweightKnapsacks(numberOfKnapsacks, capacities, knapsacks, myItems);
+        System.out.println("");
+
+        int indexOfKnapsackToReduce = indexOfKnapsackToReduce(overweightKnapsacks);
+        if (indexOfKnapsackToReduce <= numberOfKnapsacks - 1) {
+            //reduce an element 1 by 1 till overweight knapsack is no more overweight
+            for (int i = 0; i < size; i++) {
+                if (myItems.get(i) == 1) {
+                    ArrayList<Integer> myItemsList = new ArrayList<>();
+                    myItems.set(i, 0);
+                    if (!isOverweight(knapsacks[indexOfKnapsackToReduce], myItems, capacities[indexOfKnapsackToReduce]))
+                        ;
+                    break;
+                }
+            }
         }
-        System.out.println(myLists.get(indexOfBiggest).get(biggestWeight(knapsacks[indexOfBiggest])));
+
+
+
     }
+    public static boolean isOverweight(int[] knapsack, ArrayList<Integer> items, int capacity) {
+        return (weightOfKnapsack(knapsack, items) > capacity);
+    }
+
+    //////TERMİNATE THİS
+    public static int indexOfKnapsackToReduce(int[] overweightKnapsacks) {
+        int i = 0;
+        for (; i < overweightKnapsacks.length; i++)
+            if (overweightKnapsacks[i] == 1)
+                return i;
+
+        return i + 1;
+    }
+    public static int[] overweightKnapsacks(int numberOfKnapsacks, int[] capacities, int[][] knapsacks, ArrayList<Integer> myItems) {
+        int overweightKnapsacks[] = new int[numberOfKnapsacks];
+        for (int i = 0; i < numberOfKnapsacks; i++) {
+            if (capacities[i] < weightOfKnapsack(knapsacks[i], myItems))
+                overweightKnapsacks[i] = 1;
+        }
+        return overweightKnapsacks;
+    }
+
+    public static int weightOfKnapsack(int[] knapsack, ArrayList<Integer> items) {
+        int weight = 0;
+        for (int i = 0; i < knapsack.length; i++) {
+            if (items.get(i) == 1)
+            weight += knapsack[i];
+        }
+        return weight;
+    }
+
     public static int biggestWeight(int arr[]) {
         int i = 1;
         int j = 0;
@@ -105,4 +142,5 @@ public class main {
         }
         return j;
     }
+
 }

@@ -75,8 +75,8 @@ public class main {
             myItems.add(oneZeros.get(indexOfOptimalKnapsack).get(i));
         }
 
-        int[] valuesOfItems = valuesOfItems(values, knapsacks[indexOfOptimalKnapsack]);
-        int indexOfLargest = indexOfLargest(valuesOfItems);
+        double[] valuesOfItems = valuesOfItems(values, knapsacks[indexOfOptimalKnapsack]);
+
         int[] overweightKnapsacks = overweightKnapsacks(numberOfKnapsacks, capacities, knapsacks, myItems);
         System.out.println("");
         while(doesContain(overweightKnapsacks, 1)) {
@@ -84,46 +84,54 @@ public class main {
             if (indexOfKnapsackToReduce <= numberOfKnapsacks - 1) {
                 //reduce an element 1 by 1 till overweight knapsack is no more overweight
                 for (int i = 0; i < size; i++) {
-                    if (myItems.get(i) == 1) {
-                        ArrayList<Integer> myItemsList = new ArrayList<>();
-                        myItems.set(i, 0);
-                        if (!isOverweight(knapsacks[indexOfKnapsackToReduce], myItems, capacities[indexOfKnapsackToReduce]))
+                    int indexOfLargest = indexOfLargest(valuesOfItems);
+                    if (myItems.get(indexOfLargest) == 1) {
+                        myItems.set((indexOfLargest), 0);
+                        if (!isOverweight(knapsacks[indexOfKnapsackToReduce], myItems, capacities[indexOfKnapsackToReduce])) {
                             overweightKnapsacks[indexOfKnapsackToReduce] = 0;
-                        break;
+                            break;
+                        }
                     }
                 }
             }
         }
-        System.out.println("new optimal value= " + newOptimalValue(myItems, knapsacks));
-
+        System.out.println("new optimal value= " + newOptimalValue(myItems, values, knapsacks));
+        for (int i = 0; i<size; i++) {
+            System.out.println(myItems.get(i));
+        }
 
     }
-    public static int indexOfLargest(int arr[]) {
-        int max = arr[0];
+    public static int indexOfLargest(double arr[]) {
+        double max = arr[0];
         int maxIndex = 0;
         for (int i = 1; i < arr.length; i++) {
-            if (arr[i] > max) {
+            if (arr[i] < max && arr[i] < 0) {
                 max = arr[i];
                 maxIndex = i;
             }
         }
+        arr[maxIndex] = 1.0;
         return maxIndex;
     }
 
-    public static int[] valuesOfItems(int[] values, int[] weights) {
-        int[] result = new int[values.length];
+    public static double[] valuesOfItems(int[] values, int[] weights) {
+        double[] result = new double[values.length];
         for (int i = 0; i < values.length; i++) {
-            result[i] = values[i] * weights[i];
+            if (weights[i] == 0)
+                result[i] = -2147483648;
+            else
+            result[i] = - (float) values[i] / (float) weights[i];
         }
         return result;
     }
 
-    public static int newOptimalValue(ArrayList<Integer> items, int knapsacks[][]) {
+    public static int newOptimalValue(ArrayList<Integer> myItems, int[] items, int knapsacks[][]) {
         int sum = 0;
         int result = 0;
         for (int i = 0; i < knapsacks.length; i++) {
-            for (int j = 0; j < items.size(); j++) {
-                sum += items.get(j) * knapsacks[i][j];
+            for (int j = 0; j < items.length; j++) {
+                if(myItems.get(j) == 1)
+                sum += items[j];
             }
             if (sum > result)
             result = sum;
@@ -144,7 +152,8 @@ public class main {
     }
 
     public static boolean isOverweight(int[] knapsack, ArrayList<Integer> items, int capacity) {
-        return (weightOfKnapsack(knapsack, items) > capacity);
+        int weight = weightOfKnapsack(knapsack, items);
+        return (weight > capacity);
     }
 
     //////TERMİNATE THİS

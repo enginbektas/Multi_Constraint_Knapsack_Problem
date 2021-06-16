@@ -24,7 +24,7 @@ public class Reader {
         ArrayList<Integer> elements = new ArrayList();
         Scanner sc2 = null;
         try {
-            sc2 = new Scanner(new File("sample1_commented.txt"));
+            sc2 = new Scanner(new File(main.input));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

@@ -1,8 +1,19 @@
+/*
+Authors:
+-Engin Bektaş
+-Mahmut Salman
+ */
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class main {
-    public static int indexOfOptimalKnapsack;
+    //READ HERE!
+    /*
+    To run the code, mark project directory as source root.
+    To run different tests, change the input name as test1, test2, etc right below!
+     */
+    public static String input = "test4.txt";
     public static void main (String args[]) {
 
         Reader.read();
@@ -12,7 +23,6 @@ public class main {
         int knapsacks[][] = Reader.knapsacks;
         int numberOfKnapsacks = Reader.numberOfKnapsacks;
         Knapsack.size = size;
-
         //Branch and Bound Method
         BB();
 
@@ -21,8 +31,6 @@ public class main {
         //System.out.println(Recursion.knapsackRec(knapsacks[0], values, size, capacities[0]));
         //DP method
         //System.out.println(Recursion.knapsackRec(knapsacks[0], values, size, capacities[0]));
-
-
     }
 
     public static int biggest(ArrayList<Integer> list) {
@@ -51,8 +59,6 @@ public class main {
         ArrayList<Integer> optimalValues = Knapsack.results;
         //store our item selection as 0's and 1's for our highest scored knapsack
         ArrayList<ArrayList<Integer>> oneZeros = Knapsack.listOfLists;
-
-        System.out.println(biggest(optimalValues));
         //find the index of the knapsack which has the highest score
         int indexOfOptimalKnapsack = optimalValues.indexOf(biggest(optimalValues));
         //totalWeights will hold weights for our knapsacks for our item selection
@@ -64,7 +70,6 @@ public class main {
                     sum = sum + knapsacks[l][i];
                 }
             }
-            System.out.println("total weight is: " + sum);
             totalWeights[l] = sum;
         }
         //setting of my items
@@ -82,8 +87,6 @@ public class main {
             if (myItems.get(j) == 1)
                 x =+ knapsacks[indexOfOptimalKnapsack][j];
         }
-        System.out.println(x);
-        System.out.println(capacities[indexOfOptimalKnapsack]);
         while(doesContain(overweightKnapsacks, 1)) {
             int indexOfKnapsackToReduce = indexOfKnapsackToReduce(overweightKnapsacks);
             if (indexOfKnapsackToReduce <= numberOfKnapsacks - 1) {
@@ -99,8 +102,9 @@ public class main {
                     }
                 }
             }
+            overweightKnapsacks = overweightKnapsacks(numberOfKnapsacks, capacities, knapsacks, myItems);
         }
-        System.out.println("new optimal value= " + newOptimalValue(myItems, values, knapsacks));
+        System.out.println(newOptimalValue(myItems, values, knapsacks));
         for (int i = 0; i<size; i++) {
             System.out.println(myItems.get(i));
         }
@@ -109,7 +113,7 @@ public class main {
 
     //returns the largest item of given array.
     public static int indexOfLargest(double arr[]) {
-        double max = arr[0];
+        double max = -2147200000;
         int maxIndex = 0;
         for (int i = 1; i < arr.length; i++) {
             if (arr[i] > max && arr[i] < 0) {
